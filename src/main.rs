@@ -4,18 +4,26 @@ fn main() {
     let scale = get_temperature_scale();
 
     if scale == 'f' {
-        println!("Fahrenheit:");
-        let fahrenheit = get_temperature();
-        let celsius = to_celsius(fahrenheit).round();
-        println!("{}° C in celsius: {}° C", fahrenheit, celsius);
+        on_fahrenheit();
     } else if scale == 'c' {
-        println!("Celsius:");
-        let celsius = get_temperature();
-        let fahrenheit = to_fahrenheit(celsius).round();
-        println!("{}° C in fahrenheit: {}° C", celsius, fahrenheit);
+        on_celsius();
     }
 
     println!("Goodbye! :)")
+}
+
+fn on_fahrenheit() {
+    println!("Fahrenheit:");
+    let fahrenheit = get_temperature();
+    let celsius = to_celsius(fahrenheit).round();
+    println!("{}° C in celsius: {}° C", fahrenheit, celsius);
+}
+
+fn on_celsius() {
+    println!("Celsius:");
+    let celsius = get_temperature();
+    let fahrenheit = to_fahrenheit(celsius).round();
+    println!("{}° C in fahrenheit: {}° C", celsius, fahrenheit);
 }
 
 fn get_input() -> String {
