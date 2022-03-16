@@ -18,19 +18,19 @@ fn main() {
     println!("Goodbye! :)")
 }
 
+fn get_input() -> String {
+    let mut input = String::new();
+    match std::io::stdin().read_line(&mut input) {
+        Ok(_) => {},
+        Err(_) => println!("Operating system error!"),
+    };
+    input
+}
+
 fn get_temperature_scale() -> char {
     loop {
         println!("Enter 'f'(fahrenheit) or 'c'(celsius):");
-        let mut scale = String::new();
-
-        match std::io::stdin().read_line(&mut scale) {
-            Ok(_) => {},
-            Err(_) => {
-                println!("Operating system error!");
-                break '\0'
-            },
-        };
-
+        let scale = get_input();
         let scale: char = match scale.trim().to_lowercase().parse() {
             Ok(s) => s,
             Err(_) => {
@@ -47,10 +47,6 @@ fn get_temperature_scale() -> char {
         if scale != 'f' && scale != 'c' {
             println!("Unknown value!");
             continue;
-        }
-
-        if scale == 'f' {
-            break scale
         } else {
             break scale
         }
@@ -58,22 +54,13 @@ fn get_temperature_scale() -> char {
 }
 
 fn get_temperature() -> f64 {
-    let mut temperature = String::new();
-
-    loop {
-        match std::io::stdin().read_line(&mut temperature) {
-            Ok(_) => {},
-            Err(_) => {
-                println!("Operating system error!");
-                break 0.0
-            },
-        };
-
+    let temperature = get_input();
+    return loop {
         match temperature.trim().parse::<f64>() {
             Ok(t) => break t,
             Err(_) => println!("Please enter a number!")
         };
-    }
+    };
 }
 
 fn to_celsius(fahrenheit: f64) -> f64 {
