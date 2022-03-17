@@ -1,6 +1,6 @@
 fn main() {
     println!("Temperature Converter");
-    
+
     let scale = get_temperature_scale();
 
     if scale == 'f' {
@@ -16,59 +16,60 @@ fn on_fahrenheit() {
     println!("Fahrenheit:");
     let fahrenheit = get_temperature();
     let celsius = to_celsius(fahrenheit).round();
-    println!("{}° C in celsius: {}° C", fahrenheit, celsius);
+    println!("{}°F in celsius: {}°C", fahrenheit, celsius);
 }
 
 fn on_celsius() {
     println!("Celsius:");
     let celsius = get_temperature();
     let fahrenheit = to_fahrenheit(celsius).round();
-    println!("{}° C in fahrenheit: {}° C", celsius, fahrenheit);
+    println!("{}°C in fahrenheit: {}°F", celsius, fahrenheit);
 }
 
 fn get_input() -> String {
     let mut input = String::new();
     match std::io::stdin().read_line(&mut input) {
-        Ok(_) => {},
         Err(_) => println!("Operating system error!"),
-    };
+        _ => (),
+    }
     input
 }
 
 fn get_temperature_scale() -> char {
     loop {
         println!("Enter 'f'(fahrenheit) or 'c'(celsius):");
-        let scale = get_input();
-        let scale: char = match scale.trim().to_lowercase().parse() {
-            Ok(s) => s,
-            Err(_) => {
+        match get_input().trim().to_lowercase().parse::<char>() {
+            Ok(s) => {
+                if !s.is_alphabetic() {
+                    println!("Please enter a alphabetic character");
+                    continue;
+                }
+
+                if s == 'f' || s == 'c' {
+                    break s;
+                } else {
+                    println!("Unknown value!");
+                    continue;
+                }
+            }
+            _ => {
                 println!("Please enter a single character!");
                 continue;
             }
         };
-
-        if !scale.is_alphabetic() {
-            println!("Please enter a alphabetic character");
-            continue;
-        }
-
-        if scale != 'f' && scale != 'c' {
-            println!("Unknown value!");
-            continue;
-        } else {
-            break scale
-        }
     }
 }
 
 fn get_temperature() -> f64 {
-    let temperature = get_input();
-    return loop {
-        match temperature.trim().parse::<f64>() {
+    loop {
+        match get_input().trim().parse::<f64>() {
             Ok(t) => break t,
-            Err(_) => println!("Please enter a number!")
+            _ => {
+                println!("Please enter a number!");
+                continue;
+            }
         };
-    };
+    }
 }
 
 fn to_celsius(fahrenheit: f64) -> f64 {
