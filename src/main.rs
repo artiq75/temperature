@@ -28,9 +28,8 @@ fn on_celsius() {
 
 fn get_input() -> String {
     let mut input = String::new();
-    match std::io::stdin().read_line(&mut input) {
-        Err(_) => println!("Operating system error!"),
-        _ => (),
+    if let Err(_) = std::io::stdin().read_line(&mut input) {
+        println!("Operating system error!");
     }
     input
 }
