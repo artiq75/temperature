@@ -28,46 +28,46 @@ fn on_celsius() {
 
 fn get_input() -> String {
     let mut input = String::new();
-    if let Err(_) = std::io::stdin().read_line(&mut input) {
-        println!("Operating system error!");
-    }
-    input
+    std::io::stdin()
+        .read_line(&mut input)
+        .expect("Erreur de lecture");
+    input.trim().to_string()
 }
 
 fn get_temperature_scale() -> char {
     loop {
         println!("Enter 'f'(fahrenheit) or 'c'(celsius):");
-        match get_input().trim().to_lowercase().parse::<char>() {
+        match get_input().to_lowercase().parse::<char>() {
             Ok(s) => {
                 if !s.is_alphabetic() {
                     println!("Please enter a alphabetic character");
                     continue;
                 }
 
-                if s == 'f' || s == 'c' {
-                    break s;
-                } else {
+                if s != 'f' && s != 'c' {
                     println!("Unknown value!");
                     continue;
                 }
+
+                break s;
             }
-            _ => {
+            Err(_) => {
                 println!("Please enter a single character!");
                 continue;
             }
-        };
+        }
     }
 }
 
 fn get_temperature() -> f64 {
     loop {
-        match get_input().trim().parse::<f64>() {
+        match get_input().parse() {
             Ok(t) => break t,
-            _ => {
+            Err(_) => {
                 println!("Please enter a number!");
                 continue;
             }
-        };
+        }
     }
 }
 
